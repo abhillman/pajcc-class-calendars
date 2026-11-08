@@ -247,7 +247,8 @@ Always check the official schedule before heading over.</p>
 
 def main() -> int:
     out = Path(sys.argv[1] if len(sys.argv) > 1 else "site")
-    base_url = sys.argv[2] if len(sys.argv) > 2 else ""
+    # Pages may report http:// when HTTPS isn't enforced; always link https.
+    base_url = re.sub(r"^http://", "https://", sys.argv[2] if len(sys.argv) > 2 else "")
     out.mkdir(parents=True, exist_ok=True)
 
     now = datetime.now(timezone.utc)
